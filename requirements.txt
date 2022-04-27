@@ -95,8 +95,9 @@ gcsfs==2022.2.0
 gevent @ file:///opt/concourse/worker/volumes/live/123efac8-0706-463e-4084-078386897222/volume/gevent_1616772940436/work
 glob2 @ file:///home/linux1/recipes/ci/glob2_1610991677669/work
 gmpy2==2.0.8
+google==3.0.0
 google-api-core==1.31.5
-google-api-python-client==1.12.8
+google-api-python-client==2.46.0
 google-apitools==0.5.31
 google-auth==1.35.0
 google-auth-httplib2==0.1.0
