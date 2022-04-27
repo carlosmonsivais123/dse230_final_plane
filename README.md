@@ -18,9 +18,10 @@
 | Get Data                      | We were able to get the plane data from https://www.kaggle.com/datasets/usdot/flight-delays?select=flights.csv               | Done        |
 | Store Data in GCP             | Stored data in BQ and in a GCP bucket                                                                                        | Done        |
 | Look into weather data        | Look into weather data by airport and see if it's possible to merge with current data set.                                   | In Progress |
+| Change Data Scehma            | Change the schema of the data                                                                                                | In Progress |
 | Visualizations                | Create EDA visualizations for plane data: Either in Plotly or Matplotlib --> Run these through PySpark                       | In Progress |
 | Google Slides Presentation 1  | Complete Presenation 1                                                                                                       | In Progress |
-|Create prediction Cateogry	    | Create super early, slightly early, on time, slightly delayed, and super delayed category.	                               |In Progress  |
+|Create prediction Cateogry	    | Create super early, slightly early, on time, slightly delayed, and super delayed category.	                               | In Progress |
 
 ### Project Structure
 download_data.py --> Downloads data from Kaggle.
