@@ -167,6 +167,7 @@ jupyterlab-pygments @ file:///tmp/build/80754af9/jupyterlab_pygments_16014907206
 jupyterlab-server @ file:///tmp/build/80754af9/jupyterlab_server_1617134334258/work
 jupyterlab-widgets @ file:///tmp/build/80754af9/jupyterlab_widgets_1609884341231/work
 kaggle==1.5.12
+kaleido==0.2.1
 Keras-Preprocessing==1.1.2
 keras-tuner==1.1.0
 keyring @ file:///opt/concourse/worker/volumes/live/107edf16-ab8b-49bb-692b-65f944af2b43/volume/keyring_1614616747185/work
@@ -250,6 +251,7 @@ protobuf==3.19.3
 psutil @ file:///opt/concourse/worker/volumes/live/0673cd4b-30c1-4470-7490-d8955610f5d5/volume/psutil_1612298002202/work
 ptyprocess @ file:///tmp/build/80754af9/ptyprocess_1609355006118/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
 py @ file:///tmp/build/80754af9/py_1607971587848/work
+py4j==0.10.9.3
 pyarrow==6.0.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -404,6 +406,7 @@ pyOpenSSL @ file:///tmp/build/80754af9/pyopenssl_1608057966937/work
 pyparsing @ file:///home/linux1/recipes/ci/pyparsing_1610983426697/work
 pyrsistent @ file:///opt/concourse/worker/volumes/live/ff11f3f0-615b-4508-471d-4d9f19fa6657/volume/pyrsistent_1600141727281/work
 PySocks @ file:///opt/concourse/worker/volumes/live/85a5b906-0e08-41d9-6f59-084cee4e9492/volume/pysocks_1594394636991/work
+pyspark==3.2.1
 pytest==6.2.3
 python-dateutil @ file:///home/ktietz/src/ci/python-dateutil_1611928101742/work
 python-jsonrpc-server @ file:///tmp/build/80754af9/python-jsonrpc-server_1600278539111/work
