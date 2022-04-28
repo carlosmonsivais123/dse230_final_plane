@@ -1,3 +1,4 @@
+import pandas as pd
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 import seaborn as sns
@@ -18,7 +19,7 @@ class Create_EDA_Plots:
                 self.origin_airport_count = df.groupBy('ORIGIN_AIRPORT').count().orderBy('count', ascending=False)
                 self.destination_airport_count = df.groupBy('DESTINATION_AIRPORT').count().orderBy('count', ascending=False)
 
-                # correlation_matrix and pairplot
+                # correlation_matrix, pairplot
                 self.integer_cols = [f.name for f in df.schema.fields if isinstance(f.dataType, IntegerType)]
                 self.integer_df = df[[self.integer_cols]]
                 self.integer_df_drop_na = self.integer_df.na.drop("any")
@@ -31,6 +32,20 @@ class Create_EDA_Plots:
                 matrix = Correlation.corr(df_vector, vector_col)
                 matrix_array = matrix.collect()[0]["pearson({})".format(vector_col)].values
                 self.matrix_array = matrix_array.reshape((len(self.integer_cols), len(self.integer_cols)))
+
+                # summary_statistics
+                summary_table = df.summary()
+                pandas_summary = summary_table.toPandas()
+                summary_pandas_df = pandas_summary.T
+                summary_pandas_df.rename(columns = summary_pandas_df.iloc[0], inplace = True)
+                summary_pandas_df_table = summary_pandas_df.iloc[1:]
+                summary_pandas_df_table.reset_index(inplace = True, drop = False)
+                summary_pandas_df_table.rename(columns={summary_pandas_df_table.columns[0]: "Columns" }, inplace = True)
+                summary_pandas_df_table['mean'] = summary_pandas_df_table['mean'].astype(float)
+                summary_pandas_df_table['mean'] = summary_pandas_df_table['mean'].round(2)
+                summary_pandas_df_table['stddev'] = summary_pandas_df_table['stddev'].astype(float)
+                summary_pandas_df_table['stddev'] = summary_pandas_df_table['stddev'].round(2)
+                self.summary_pandas_df_table = summary_pandas_df_table
 
         def origin_destination_counts(self):
                 fig = make_subplots(rows=2, 
@@ -79,7 +94,26 @@ class Create_EDA_Plots:
                 fig.map_offdiag(sns.scatterplot)
                 plt.savefig('EDA_Static_Images/Pairplot.png')
 
+        def summary_table(self):
+                fig = go.Figure(data=[go.Table(header=dict(values=list(self.summary_pandas_df_table.columns)),
+                                cells=dict(values=[self.summary_pandas_df_table['Columns'],
+                                                   self.summary_pandas_df_table['count'],
+                                                   self.summary_pandas_df_table['mean'],
+                                                   self.summary_pandas_df_table['stddev'],
+                                                   self.summary_pandas_df_table['min'],
+                                                   self.summary_pandas_df_table['25%'],
+                                                   self.summary_pandas_df_table['50%'],
+                                                   self.summary_pandas_df_table['75%'],
+                                                   self.summary_pandas_df_table['max']],
+                                            font_size=9       
+                                                   ))])
+                fig.update_layout(width=1500,
+                                  height=1500)
+                fig.write_image("EDA_Static_Images/Summary_Table.png")
+                fig.write_html("EDA_HTML_Images/Summary_Table.html")
+
 create_eda_plots = Create_EDA_Plots(df = df)
 create_eda_plots.origin_destination_counts()
 create_eda_plots.correlation_matrix()
 create_eda_plots.pairplot()
+create_eda_plots.summary_table()

@@ -47,6 +47,3 @@ class Create_Spark_Session:
                                   schema = schema).cache()
 
         return spark_df
-
-create_spark_session = Create_Spark_Session()
-df = create_spark_session.create_spark_df()
