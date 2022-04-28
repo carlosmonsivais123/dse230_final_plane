@@ -1,4 +1,4 @@
-# dse230-final-project: On Time Flight or Wait Till Night, Delay or Hooray
+# dse230-final-project: Delay or Hooray
 ## By: Jessica Allen and Carlos Monsivais
 
 ### Project Description
