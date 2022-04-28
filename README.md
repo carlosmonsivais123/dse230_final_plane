@@ -11,7 +11,6 @@
 
 * Project Thoughts: Iterate this process to model by aiport, and compare individual models by airtport to a full model that models all airports?
 
-
 ### To Do List
 | Item                          | Description                                                                                                                  | Completed   |
 | :---                          |    :----:                                                                                                                    |     ---:    |
