@@ -113,7 +113,7 @@ class Create_EDA_Plots:
                                             font_size=9       
                                                    ))])
                 fig.update_layout(width=1500,
-                                  height=1500)
+                                  height=900)
                 fig.write_image("EDA_Static_Images/Summary_Table.png")
                 fig.write_html("EDA_HTML_Images/Summary_Table.html")
 
