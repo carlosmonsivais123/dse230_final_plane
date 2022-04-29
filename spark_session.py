@@ -6,7 +6,7 @@ class Create_Spark_Session:
     def create_spark_df(self):
         conf = pyspark.SparkConf().setAll([
                 ('spark.master',   'local[*]'),
-                ('spark.app.name', 'PySpark Demo')])
+                ('spark.app.name', 'PySpark Plane Data')])
 
         schema = StructType([StructField("YEAR", StringType(), False),
                              StructField("MONTH", StringType(), False),

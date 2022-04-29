@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from pyspark.ml.stat import Correlation
 from pyspark.ml.feature import VectorAssembler
 from pyspark.sql.types import IntegerType
+from pyspark.sql.functions import col,isnan, when, count
 
 from spark_session import Create_Spark_Session
 
@@ -46,6 +47,10 @@ class Create_EDA_Plots:
                 summary_pandas_df_table['stddev'] = summary_pandas_df_table['stddev'].astype(float)
                 summary_pandas_df_table['stddev'] = summary_pandas_df_table['stddev'].round(2)
                 self.summary_pandas_df_table = summary_pandas_df_table
+
+                # null_values
+                null_counts_df = df.select([count(when(isnan(c) | col(c).isNull(), c)).alias(c) for c in df.columns])
+                self.null_counts_pandas = null_counts_df.toPandas()
 
         def origin_destination_counts(self):
                 fig = make_subplots(rows=2, 
@@ -112,8 +117,25 @@ class Create_EDA_Plots:
                 fig.write_image("EDA_Static_Images/Summary_Table.png")
                 fig.write_html("EDA_HTML_Images/Summary_Table.html")
 
+        def null_values(self):
+                fig = go.Figure(data=[go.Bar(x = list(self.null_counts_pandas.columns), 
+                                             y = self.null_counts_pandas.values.tolist()[0],
+                                             text = self.null_counts_pandas.values.tolist()[0],
+                                             textposition = 'auto')])
+                fig.update_layout(title={'text': "Null Value Count",
+                                        'x':0.5,
+                                        'xanchor': 'center',
+                                        'yanchor': 'top'},
+                                xaxis_title = "Column Names",
+                                yaxis_title = "Null Counts")                            
+
+                fig.write_image("EDA_Static_Images/Null_Values.png")
+                fig.write_html("EDA_HTML_Images/Null_Values.html")
+
+
 create_eda_plots = Create_EDA_Plots(df = df)
 create_eda_plots.origin_destination_counts()
 create_eda_plots.correlation_matrix()
 create_eda_plots.pairplot()
 create_eda_plots.summary_table()
+create_eda_plots.null_values()
