@@ -38,7 +38,7 @@ class Create_Spark_Session:
                             ])
 
         spark = SparkSession.builder.getOrCreate()
-        spark_df = spark.read.csv("gs://dse_230_plane/flight-delays/flights.csv",
+        spark_df = spark.read.csv("gs://plane-pyspark-run/flight-delays/flights.csv",
                                   header=True,
                                   schema = schema)
 

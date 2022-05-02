@@ -3,7 +3,6 @@ from google.cloud import storage
 from google.oauth2 import service_account
 import re
 
-from gcp_functions import GCP_Functions
 from read_vars import project_id, region, cluster_name, gcp_bucket_name, gcp_credentials
 
 def run_spark(region, cluster_name, gcs_bucket, spark_filename, project_id, gcp_credentials):
@@ -33,10 +32,6 @@ def run_spark(region, cluster_name, gcs_bucket, spark_filename, project_id, gcp_
     output = (client.get_bucket(matches.group(1)).blob(f"{matches.group(2)}.000000000").download_as_string())
 
     print(f"Job finished successfully: {output}\r\n")
-
-# Fix it 
-# gcp_functions = GCP_Functions()
-# client = gcp_functions.client_var(gcp_credentials = gcp_credentials)
 
 run_spark(region = region, 
           cluster_name = cluster_name, 

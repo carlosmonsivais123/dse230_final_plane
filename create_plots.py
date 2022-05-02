@@ -40,30 +40,30 @@ class Create_EDA_Plots:
                 self.null_counts_df = df.select([count(when(isnan(c) | col(c).isNull(), c)).alias(c) for c in df.columns])
 
         def origin_destination_counts(self):
-                self.origin_airport_count.coalesce(1).write.csv(path = 'gs://dse_230_plane/Spark_Data_Output/origin_airport_count.csv', 
+                self.origin_airport_count.coalesce(1).write.csv(path = 'gs://plane-pyspark-run/Spark_Data_Output/origin_airport_count.csv', 
                                                                 mode = 'overwrite',
                                                                 header = True)
-                self.destination_airport_count.coalesce(1).write.csv(path = 'gs://dse_230_plane/Spark_Data_Output/destination_airport_count.csv', 
+                self.destination_airport_count.coalesce(1).write.csv(path = 'gs://plane-pyspark-run/Spark_Data_Output/destination_airport_count.csv', 
                                                                      mode = 'overwrite',
                                                                      header = True)
 
         def correlation_matrix(self):
-                self.matrix_df.coalesce(1).write.csv(path = 'gs://dse_230_plane/Spark_Data_Output/corr_matrix.csv', 
+                self.matrix_df.coalesce(1).write.csv(path = 'gs://plane-pyspark-run/Spark_Data_Output/corr_matrix.csv', 
                                                      mode = 'overwrite',
                                                      header = True)
 
         def pairplot_rows(self):
-                self.pairplot.coalesce(1).write.csv(path = 'gs://dse_230_plane/Spark_Data_Output/pairplot.csv', 
+                self.pairplot.coalesce(1).write.csv(path = 'gs://plane-pyspark-run/Spark_Data_Output/pairplot.csv', 
                                                     mode = 'overwrite',
                                                     header = True)
 
         def summary_table_vals(self):
-                self.summary_table.coalesce(1).write.csv(path = 'gs://dse_230_plane/Spark_Data_Output/summary_table.csv', 
+                self.summary_table.coalesce(1).write.csv(path = 'gs://plane-pyspark-run/Spark_Data_Output/summary_table.csv', 
                                                          mode = 'overwrite',
                                                          header = True)
 
         def null_values(self):
-                self.null_counts_df.coalesce(1).write.csv(path = 'gs://dse_230_plane/Spark_Data_Output/null_value_counts.csv', 
+                self.null_counts_df.coalesce(1).write.csv(path = 'gs://plane-pyspark-run/Spark_Data_Output/null_value_counts.csv', 
                                                           mode = 'overwrite',
                                                           header = True)
 
