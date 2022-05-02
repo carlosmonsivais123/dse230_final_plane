@@ -4,10 +4,6 @@ from pyspark.sql.types import StructType, StructField, IntegerType, StringType
 
 class Create_Spark_Session:
     def create_spark_df(self):
-        conf = pyspark.SparkConf().setAll([
-                ('spark.master',   'local[*]'),
-                ('spark.app.name', 'PySpark Plane Data')])
-
         schema = StructType([StructField("YEAR", StringType(), False),
                              StructField("MONTH", StringType(), False),
                              StructField("DAY", StringType(), False),
@@ -41,9 +37,9 @@ class Create_Spark_Session:
                              StructField("WEATHER_DELAY", StringType(), True),
                             ])
 
-        spark = SparkSession.builder.config(conf=conf).getOrCreate()
-        spark_df = spark.read.csv("flight-delays/flights.csv",
+        spark = SparkSession.builder.getOrCreate()
+        spark_df = spark.read.csv("gs://dse_230_plane/flight-delays/flights.csv",
                                   header=True,
-                                  schema = schema).cache()
+                                  schema = schema)
 
-        return spark_df
+        return spark_df, spark

@@ -1,0 +1,5 @@
+gcp_project_id: 'cpi-tfx'
+gcp_region: 'us-central1'
+gcp_cluster_name: 'dse-230-pyspark'
+gcp_bucket_name: 'dse_230_plane'
+gcp_credentials: 'cpi-tfx-203342181a05.json'
