@@ -14,4 +14,4 @@ gcp_cluster_name: 'dse-230-pyspark'
 gcp_bucket_name: 'plane-pyspark-run'
 
 # GCP credentials key name
-gcp_credentials: 'dse230-729f9f1f0c1d.json'
+gcp_credentials: '/Users/CarlosMonsivais/Desktop/dse230_plane/dse230-0c3411f763a5.json'
