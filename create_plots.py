@@ -39,6 +39,9 @@ class Create_EDA_Plots:
                 # null_values
                 self.null_counts_df = df.select([count(when(isnan(c) | col(c).isNull(), c)).alias(c) for c in df.columns])
 
+                # train_test_split
+                
+
         def origin_destination_counts(self):
                 self.origin_airport_count.coalesce(1).write.csv(path = 'gs://plane-pyspark-run/Spark_Data_Output/origin_airport_count.csv', 
                                                                 mode = 'overwrite',
