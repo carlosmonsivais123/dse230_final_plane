@@ -1,5 +1,0 @@
-gcp_project_id: 'dse230'
-gcp_region: 'us-central1'
-gcp_cluster_name: 'dse-230-pyspark'
-gcp_bucket_name: 'plane-pyspark-run'
-gcp_credentials: 'dse230-729f9f1f0c1d.json'
