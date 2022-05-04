@@ -8,21 +8,24 @@
         - Plot and analyze the metadata --> (In progress, not done yet)
 
 # Folder and File Structure
-## Input_Variables
+## Folder: Input_Variables
 * These files take in the user specified variables needed for the project such as:
     * gcp_project_id: 'dse230' --> No change
     * gcp_region: 'us-central1' --> No change
     * gcp_cluster_name: 'dse-230-pyspark' --> No change
     * gcp_bucket_name: 'plane-pyspark-run' --> No change 
 
-    ### Input_Variables Files   
+    ### Files: Input_Variables  
     * gcp_credentials: '/Users/CarlosMonsivais/Desktop/dse230_plane/dse230-0c3411f763a5.json' --> Change to wherever your JSON key is located.
         * input_vars.yaml: This is the YAML file where you deifne the varibles above, only need to chnage the location of the JSON key.
         * read_vars.py: Reads in the variable from the YAML file above so we can use those variables throughout the project.
 
-## GCP_Functions
+## Folder: GCP_Functions
 * These files will create a Client variable to access the GCP bucket API and will also upload local files up to a specified GCP bucket.
-    * 
+
+    ### Files: Input_Variables
+    * GCP_File_Upload.py: This file has two functions within the same class, one to create a Client variables type and another to send the speciifed files into
+    a GCP bucket.
 
 
 ## DataProc_Files
