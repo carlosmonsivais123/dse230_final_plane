@@ -23,14 +23,21 @@
 ## Folder: GCP_Functions
 * These files will create a Client variable to access the GCP bucket API and will also upload local files up to a specified GCP bucket.
 
-    ### Files: Input_Variables
+    ### Files: GCP_Functions
     * GCP_File_Upload.py: This file has two functions within the same class, one to create a Client variables type and another to send the speciifed files into
     a GCP bucket.
 
+## Folder: PySpark_Files
+* These files will create a spark cluster, run a PySpark job using the python files we uploaded to GCP initially and then delete the cluster after the job is complete.
 
-## DataProc_Files
-* These are the files that will be run in DataProc in GCP 
-    * main.py: Runs the dataproc_spark_session.py and the dataproc_spark_commands.py Python files.
+    ### Files: PySpark_Files
+    * create_run_delete_spark_cluseter: This file has three functions within the same class, one to create a PySpark cluster, one to run the these files stored in the GCP bucket (dataproc_main.py, dataproc_spark_session.py, dataproc_spark_commands.py).
+
+## Folder: DataProc_Files
+* These are the files that will be run in DataProc in GCP.
+
+    ### Files: DataProc_Files
+    * dataproc_main.py: Runs the dataproc_spark_session.py and the dataproc_spark_commands.py Python files.
     * dataproc_spark_session.py: Creates a spark session and reads in teh data from a GCS bucket.
     * dataproc_spark_commands.py: These are the PySpark commands that we will use to make calculations on our dataframe.
 
