@@ -25,6 +25,7 @@
 | Create prediction Category	   | Create super early, slightly early, on time, slightly delayed, and super delayed category in the data	                      | In Progress |
 | Feature Engineering        	   | Create more features in data set that may be helpful for model                                                               | In Progress |
 | Stratified Train Test Split Data | Train Test Split proportionally in PySpark.                                                                                  | In Progress |
+| Model Data                       | Create Logisitic Regression Model                                                                                            | In Progress |
 | Conclusion                       | Summarize Project and Models                                                                                                 | In Progress |
 
 
