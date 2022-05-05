@@ -7,6 +7,9 @@ from PySpark_Files.create_run_delete_spark_cluster import Dataproc_Spark
 # Variables from the read_vars.py file.
 from Input_Variables.read_vars import project_id, region, cluster_name, gcp_bucket_name, gcp_credentials
 
+# Plotting class to create plots based on PySpark output.
+from EDA_Plots.eda_plots import EDA_Plots
+
 
 #################################################### Send Files to GCP Bucket ####################################################
 print("Sending Files to GCP")
@@ -68,3 +71,18 @@ dataproc_spark.delete_cluster(project_id = project_id,
                               region = region, 
                               cluster_name = cluster_name,
                               gcp_credentials = gcp_credentials)
+
+
+#################################################### EDA Plots ####################################################
+print('\nCreating EDA Plots and sending them to GCP')
+
+# Initiating the GCP_Functions() class from the gcp_functions.py file.
+eda_plots = EDA_Plots(bucket_name = gcp_bucket_name,
+                      gcp_credentials = gcp_credentials,
+                      client = client)
+
+eda_plots.origin_destination_airport_counts_plotly()
+eda_plots.corr_matrix_plotly()
+eda_plots.summary_table_plotly()
+eda_plots.null_values_counts_plotly()
+eda_plots.pairplot_plotly()

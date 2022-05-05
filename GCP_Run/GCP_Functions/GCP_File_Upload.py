@@ -44,7 +44,6 @@ class GCP_Functions:
                         Output Variables
                                 1. file_upload_message: Prints out the file has been succesfully uploaded at the specified location in the GCP bucket.
         '''
-
         bucket = client.get_bucket(bucket_name)
         blob = bucket.blob(blob_name)
         blob.upload_from_filename(path_to_file, 

@@ -86,7 +86,9 @@ class PySpark_Code:
                                 Output Variables
                                         None
                 '''
-                pairplot = self.df.limit(2000)
+                integer_cols = [f.name for f in self.df.schema.fields if isinstance(f.dataType, IntegerType)]
+                integer_df = self.df[[integer_cols]]
+                pairplot = integer_df.limit(2000)
 
                 pairplot.coalesce(1).write.csv(path = 'gs://plane-pyspark-run/Spark_Data_Output/pairplot.csv', 
                                                     mode = 'overwrite',
