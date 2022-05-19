@@ -50,7 +50,7 @@ class Dataproc_Spark:
         print("Cluster created successfully: {}".format(result.cluster_name))
 
 
-    def run_spark(self, project_id, region, cluster_name, gcp_credentials):
+    def run_spark(self, project_id, region, cluster_name, gcp_credentials, main_pyspark_file, other_pyspark_files):
         '''
         Function --> run_spark:          
                         This function runs the PySpark code we wrote and stored in the GCS bucket at the specifed locations below.
@@ -73,9 +73,8 @@ class Dataproc_Spark:
 
         # Create the job config.
         job = {"placement": {"cluster_name": cluster_name},
-              "pyspark_job": {"main_python_file_uri": "gs://plane-pyspark-run/DataProc_Files/dataproc_main.py",
-                              "python_file_uris": ["gs://plane-pyspark-run/DataProc_Files/dataproc_spark_session.py", 
-                                                   "gs://plane-pyspark-run/DataProc_Files/dataproc_spark_commands.py"]}}
+              "pyspark_job": {"main_python_file_uri": "{}".format(main_pyspark_file),
+                              "python_file_uris": other_pyspark_files}}
 
         operation = job_client.submit_job_as_operation(request={"project_id": project_id, 
                                                                 "region": region, 
