@@ -15,13 +15,13 @@ spark_session_outputs = create_spark_session.create_spark_df()
 df = spark_session_outputs[0]
 
 # Spark Session we created.
-spark = spark_session_outputs[1]
+spark = spark_session_outputs[3]
 
 
 #################################################### dataproc_spark_commands.py ####################################################
 # Creating an instance from the class PySpark_Code() from the file dataproc_spark_commands.py where we will run the PySpark code 
 # creating the following values and files.
-pyspark_code = PySpark_Code(df = df, spark = spark)
+pyspark_code = PySpark_Code(df=df, spark=spark)
 
 # Origin and Destination airport counts
 pyspark_code.origin_destination_counts()

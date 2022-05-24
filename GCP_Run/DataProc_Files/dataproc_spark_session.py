@@ -63,9 +63,17 @@ class Create_Spark_Session:
         spark = SparkSession.builder.getOrCreate()
 
         # Pyspark dataframe type using the schema specified above and the GCS bucket location of the flights data.
-        spark_df = spark.read.csv("gs://plane-pyspark-run/flight-delays/flights.csv",
+        spark_df_flights = spark.read.csv("gs://plane-pyspark-run/flight-delays/flights.csv",
                                   header=True,
                                   schema = schema)
 
+        spark_df_airports = spark.read.csv("gs://plane-pyspark-run/flight-delays/airports.csv",
+                                  header=True,
+                                  inferSchema = True)
+
+        spark_df_airlines = spark.read.csv("gs://plane-pyspark-run/flight-delays/airlines.csv",
+                                  header=True,
+                                  inferSchema = True)
+
         # Returns a spark dataframe: spark_df and a Spark Session: spark
-        return spark_df, spark
+        return spark_df_flights, spark_df_airports, spark_df_airlines, spark

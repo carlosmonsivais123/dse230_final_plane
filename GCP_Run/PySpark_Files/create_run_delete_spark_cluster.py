@@ -37,8 +37,8 @@ class Dataproc_Spark:
         # Create the cluster config.
         cluster = {"project_id": project_id,
                    "cluster_name": cluster_name,
-                   "config": {"master_config": {"num_instances": 1, "machine_type_uri": "n1-standard-4"},
-                              "worker_config": {"num_instances": 2, "machine_type_uri": "n1-standard-4"},
+                   "config": {"master_config": {"num_instances": 1, "machine_type_uri": "n1-standard-8"},
+                              "worker_config": {"num_instances": 2, "machine_type_uri": "n1-standard-8"},
                               "endpoint_config": {"enable_http_port_access": True}, 
                               "software_config": {"image_version": "2.0"}}}
 
@@ -68,7 +68,7 @@ class Dataproc_Spark:
         credentials = service_account.Credentials.from_service_account_file('{}'.format(gcp_credentials))
 
         # Create the job client.
-        job_client = dataproc_v1.JobControllerClient(credentials = credentials, 
+        job_client = dataproc_v1.JobControllerClient(credentials=credentials,
                                                      client_options={"api_endpoint": "{}-dataproc.googleapis.com:443".format(region)})
 
         # Create the job config.
