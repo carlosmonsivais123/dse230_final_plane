@@ -107,6 +107,7 @@ class PySpark_Code:
                                   AND departing.day_of_week = arriving.day_of_week
                                   AND departing.airport_abbrv = arriving.airport_abbrv
                                   AND departing.floored_hour = arriving.floored_hour 
+                                  AND departing.hour = arriving.hour
                 """)
                 print("2")
 
