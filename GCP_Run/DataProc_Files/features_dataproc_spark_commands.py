@@ -169,13 +169,22 @@ class PySpark_Code:
                 print("4")
                 # The index of string vlaues multiple columns
 
+                # cat_cols = ['month',
+                #             'day_of_week',
+                #             'airline',
+                #             'airport_origin',
+                #             'airport_destination',
+                #             'depature_floored_hour',
+                #             'arrival_floored_hour']
+
                 cat_cols = ['month',
                             'day_of_week',
                             'airline',
                             'airport_origin',
                             'airport_destination',
                             'depature_floored_hour',
-                            'arrival_floored_hour']
+                            'arrival_floored_hour',
+                            'arrival_delay_category']
 
                 indexers = [
                         StringIndexer(inputCol=c, outputCol="{0}_indexed".format(c))
@@ -187,6 +196,28 @@ class PySpark_Code:
                                           outputCol="{0}_encoded".format(indexer.getOutputCol()))
                             for indexer in indexers
                             ]
+
+
+                # feature_cols = [
+                #         'distance',
+                #         'origin_airport_flights_arriving',
+                #         'origin_airport_flights_departing',
+                #         'destination_airport_flights_arriving',
+                #         'destination_airport_flights_departing',
+                #         'month_indexed',
+                #         'day_of_week_indexed',
+                #         'airline_indexed',
+                #         'airport_origin_indexed',
+                #         'airport_destination_indexed',
+                #         'depature_floored_hour_indexed',
+                #         'arrival_floored_hour_indexed',
+                #         'month_indexed_encoded',
+                #         'day_of_week_indexed_encoded',
+                #         'airline_indexed_encoded',
+                #         'airport_origin_indexed_encoded',
+                #         'airport_destination_indexed_encoded',
+                #         'depature_floored_hour_indexed_encoded',
+                #         'arrival_floored_hour_indexed_encoded']
 
                 feature_cols = [
                         'distance',
@@ -217,6 +248,8 @@ class PySpark_Code:
                 model = pipeline.fit(df)
                 transformed = model.transform(df)
 
+                print(transformed.columns)
+
                 final_cols = ['month',
                               'day_of_week',
                               'airline',
@@ -234,16 +267,13 @@ class PySpark_Code:
                               'arrival_delay_category_indexed']
                 final_df = transformed[final_cols]
 
-                # print(final_df.count())
-                #
+
+                print(final_df.count())
+                
                 # final_df.coalesce(1).write.csv(path='gs://plane-pyspark-run/Spark_Data_Output/model_df.csv',
                 #                                     mode='overwrite',
                 #                                     header=True)
 
-                lr = LogisticRegression(featuresCol='features', labelCol='arrival_delay_category_indexed', maxIter=1)
-                lrModel = lr.fit(final_df)
-                predictions = lrModel.transform(final_df)
-
-
-
-
+                # lr = LogisticRegression(featuresCol='features', labelCol='arrival_delay_category_indexed', maxIter=1)
+                # lrModel = lr.fit(final_df)
+                # predictions = lrModel.transform(final_df)
