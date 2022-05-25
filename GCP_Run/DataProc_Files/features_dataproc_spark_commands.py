@@ -65,6 +65,10 @@ class PySpark_Code:
                        left join airlines al
                               ON flights.airline = al.iata_code""")
 
+                print('1: {}'.format(df.count()))
+                # 1: 5819079
+
+
                 ##Create categories for delay time
                 df = df.withColumn("arrival_delay_category", (when(col("ARRIVAL_DELAY") <= -15, "Super Early"))
                                    .when(col("ARRIVAL_DELAY") <= -5, "Slightly Early")
@@ -74,7 +78,10 @@ class PySpark_Code:
                                    .when(col("DIVERTED") == 1, "Diverted")
                                    .when(col("CANCELLED") == 1, "Cancelled")
                                    .otherwise("PROBLEM WITH DATA"))
-                print("1")
+
+                print('2: {}'.format(df.count()))
+                # 2: 5819079
+
 
                 df_flight_counts = self.spark.sql("""
                 SELECT departing.*,
@@ -109,7 +116,9 @@ class PySpark_Code:
                                   AND departing.floored_hour = arriving.floored_hour 
                                   AND departing.floored_hour = arriving.floored_hour
                 """)
-                print("2")
+                print('3: {}'.format(df_flight_counts.count()))
+                # 3: 2817134
+
 
                 df.createOrReplaceTempView("ml_df")
                 df_flight_counts.createOrReplaceTempView("flight_counts")
@@ -131,6 +140,9 @@ class PySpark_Code:
 
                 df_temp.createOrReplaceTempView("df_temp")
 
+                print('4: {}'.format(df_temp.count()))
+                # 4: 23565365
+
                 df = self.spark.sql("""
                 SELECT dt.*,
                 fc2.flights_arriving as destination_airport_flights_arriving,
@@ -145,13 +157,19 @@ class PySpark_Code:
                 and dt.day_of_week = fc2.day_of_week
                 and dt.arrival_floored_hour = fc2.floored_hour
                 """)
-                print("3")
+
+                print('5: {}'.format(df.count()))
+                # 5: 94475972
+
                 ##Change months to string months (12-> December) and day_of_week to string day (1->Monday)
                 month_name = F.udf(lambda x: calendar.month_name[int(x)])
                 day_name = F.udf(lambda x: calendar.day_name[int(x) - 1])
 
                 df = df.withColumn("month", month_name(F.col("month"))).withColumn("day_of_week",
                                                                                    day_name(F.col("day_of_week")))
+
+                print('6: {}'.format(df.count()))
+                # 6: 94475972
 
                 cols = ['month',
                         'day_of_week',
@@ -167,7 +185,10 @@ class PySpark_Code:
                         'destination_airport_flights_departing',
                         'arrival_delay_category']
                 df = df[cols]
-                print("4")
+
+                print('7: {}'.format(df.count()))
+                # 7: 94475972
+
                 # The index of string vlaues multiple columns
 
                 # cat_cols = ['month',
@@ -249,7 +270,10 @@ class PySpark_Code:
                 model = pipeline.fit(df)
                 transformed = model.transform(df)
 
-                print(transformed.columns)
+                print('8: {}'.format(transformed.count()))
+                # 8: 94475972
+
+                # print(transformed.columns)
 
                 final_cols = ['month',
                               'day_of_week',
@@ -269,7 +293,8 @@ class PySpark_Code:
                 final_df = transformed[final_cols]
 
 
-                print(final_df.count())
+                print('9: {}'.format(final_df.count()))
+                # 9: 94475972
                 
                 # final_df.coalesce(1).write.csv(path='gs://plane-pyspark-run/Spark_Data_Output/model_df.csv',
                 #                                     mode='overwrite',
