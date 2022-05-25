@@ -12,9 +12,10 @@ gcp_functions = GCP_Functions()
 client = gcp_functions.client_var(gcp_credentials = gcp_credentials)
 
 # List of Files we will use in the PySpark DataProc clusters.
-dataproc_file_list = ['eda_dataproc_main.py', 'eda_dataproc_spark_commands.py',
-                      'dataproc_spark_session.py', 'features_dataproc_main.py',
-                      'features_dataproc_spark_commands.py']
+dataproc_file_list = ['dataproc_spark_session.py',
+                      'eda_dataproc_main.py', 'eda_dataproc_spark_commands.py',
+                      'features_dataproc_main.py', 'features_dataproc_spark_commands.py', 
+                      'model_dataproc_main.py', 'model_dataproc_spark_commands.py']
 
 # Other files we want to upload such as the data in the flights.csv file and the requirements.txt file.
 other_file_list = ['requirements.txt', 'flight-delays/airlines.csv', 'flight-delays/airports.csv', 'flight-delays/flights.csv']

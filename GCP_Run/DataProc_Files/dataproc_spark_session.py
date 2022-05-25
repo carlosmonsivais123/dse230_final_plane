@@ -1,7 +1,9 @@
 # Libararies used for spark_session.py
 import pyspark
+import re
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, IntegerType, StringType
+from google.cloud import storage
 
 class Create_Spark_Session:
     '''
@@ -77,3 +79,23 @@ class Create_Spark_Session:
 
         # Returns a spark dataframe: spark_df and a Spark Session: spark
         return spark_df_flights, spark_df_airports, spark_df_airlines, spark
+
+
+    def create_model_spark_df(self):
+        # Spark session created, do not add any instances so DataProc can create efficiencies in the configuration.
+        spark = SparkSession.builder.getOrCreate()
+
+        client = storage.Client()
+        bucket = client.get_bucket("plane-pyspark-run")
+        blobs = bucket.list_blobs()
+        for blob in blobs:
+            if re.match(r'\.*{}*'.format('Spark_Data_Output/model_df.csv/part'),blob.name):
+                model_df_name = blob.name
+
+
+        print(model_df_name)
+        model_df = spark.read.csv("gs://plane-pyspark-run/{}".format(model_df_name),
+                                  header=True,
+                                  inferSchema = True)
+
+        return model_df, spark
