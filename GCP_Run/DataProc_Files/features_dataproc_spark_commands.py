@@ -114,7 +114,7 @@ class PySpark_Code:
                                   AND departing.day_of_week = arriving.day_of_week
                                   AND departing.airport_abbrv = arriving.airport_abbrv
                                   AND departing.floored_hour = arriving.floored_hour 
-                                  AND departing.floored_hour = arriving.floored_hour
+                                  AND departing.day = arriving.day
                 """)
                 print('3: {}'.format(df_flight_counts.count()))
                 # 3: 2817134
