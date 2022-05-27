@@ -37,8 +37,8 @@ class Dataproc_Spark:
         # Create the cluster config.
         cluster = {"project_id": project_id,
                    "cluster_name": cluster_name,
-                   "config": {"master_config": {"num_instances": 1, "machine_type_uri": "n1-standard-8"},
-                              "worker_config": {"num_instances": 2, "machine_type_uri": "n1-standard-8"},
+                   "config": {"master_config": {"num_instances": 1, "machine_type_uri": "n1-highmem-4"},
+                              "worker_config": {"num_instances": 2, "machine_type_uri": "n1-highmem-4"},
                               "endpoint_config": {"enable_http_port_access": True}, 
                               "software_config": {"image_version": "2.0"}}}
 

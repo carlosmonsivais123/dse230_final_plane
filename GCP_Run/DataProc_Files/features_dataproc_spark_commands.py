@@ -136,6 +136,7 @@ class PySpark_Code:
                 and dt.airport_destination_abbrv = fc2.airport_abbrv
                 and dt.day_of_week = fc2.day_of_week
                 and dt.arrival_floored_hour = fc2.floored_hour
+                order by rand()
                 """)
 
                 ##Change months to string months (12-> December) and day_of_week to string day (1->Monday)

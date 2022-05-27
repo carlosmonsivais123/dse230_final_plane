@@ -22,3 +22,4 @@ spark = spark_session_outputs[1]
 # creating the following values and files.
 pyspark_code = PySpark_Code(model_df = model_df, spark = spark)
 pyspark_code.setup_vector_assembly()
+pyspark_code.run_logistic_regression_model()
