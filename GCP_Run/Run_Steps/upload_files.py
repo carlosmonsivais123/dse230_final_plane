@@ -27,7 +27,7 @@ for file in dataproc_file_list:
                                        blob_name='DataProc_Files/{}'.format(file),
                                        path_to_file='{}/DataProc_Files/{}'.format(os.getcwd(), file))
 
-# Uploading Other Files
+# Uploading Other Files: Uploads data, this has been done so commenting out.
 # for file in other_file_list:
 #     gcp_functions.upload_to_gcp_bucket(client = client,
 #                                        bucket_name = '{}'.format(gcp_bucket_name),

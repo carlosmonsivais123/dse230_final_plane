@@ -4,13 +4,13 @@ from pyspark.ml.feature import StringIndexer, OneHotEncoder, VectorAssembler, St
 
 from pyspark.ml.tuning import ParamGridBuilder, CrossValidator
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
-from pyspark.sql.types import StringType
+from pyspark.sql.types import StringType, FloatType
 from pyspark.sql.functions import col, udf, row_number, lit
 
 import pyspark.sql.functions as f
 from pyspark.sql.window import Window
 
-
+from pyspark.mllib.evaluation import MulticlassMetrics
 
 class PySpark_Code:
         '''
@@ -30,6 +30,11 @@ class PySpark_Code:
                 '''
                 self.model_df = model_df
                 self.spark = spark
+                
+                self.save_final_model_dataframe = False
+                self.save_category_counts = False
+                self.save_model_preds = False
+                self.save_model = True
 
 
 ######### Add spark feature engineering here.
@@ -105,19 +110,21 @@ class PySpark_Code:
                 # # This works, just commenting it cuz it takes 4.5 minutes to process the query.
                 # ## Sending over final df to gcs bucket
                 self.sparse_format_udf = udf(lambda x: str(x), StringType())
-                # self.final_df.withColumn('features', self.sparse_format_udf(col('features'))).coalesce(1).write.csv(path='gs://plane-pyspark-run/Spark_Data_Output/final_model_df.csv',
-                #                     mode='overwrite',
-                #                     header=True)
+                if self.save_final_model_dataframe == True:
+                        self.final_df.withColumn('features', self.sparse_format_udf(col('features'))).coalesce(1).write.csv(path='gs://plane-pyspark-run/Spark_Data_Output/final_model_df.csv',
+                                        mode='overwrite',
+                                        header=True)
+
 
                 # # Sending over counts df to gcs bucket
-                # count_groups = self.final_df.groupBy("arrival_delay_category").count()
-                # count_groups = count_groups.withColumn('percent', f.col('count')/f.sum('count').over(Window.partitionBy())).orderBy('percent', ascending=False)
-                # count_groups.coalesce(1).write.csv(path='gs://plane-pyspark-run/Spark_Data_Output/label_proportion_table.csv',
-                #                                                 mode='overwrite',
-                #                                                 header=True)
+                if self.save_category_counts == True:
+                        count_groups = self.final_df.groupBy("arrival_delay_category").count()
+                        count_groups = count_groups.withColumn('percent', f.col('count')/f.sum('count').over(Window.partitionBy())).orderBy('percent', ascending=False)
+                        count_groups.coalesce(1).write.csv(path='gs://plane-pyspark-run/Spark_Data_Output/label_proportion_table.csv',
+                                                                        mode='overwrite',
+                                                                        header=True)
 
         def run_logistic_regression_model(self):
-                print('Here1')
                 ## Splitting data into training and testing using Stratification
                 test_df = self.spark.createDataFrame([], schema=self.final_df.schema)
                 train_df = self.spark.createDataFrame([], schema=self.final_df.schema)
@@ -131,10 +138,10 @@ class PySpark_Code:
                         test_df = test_df.union(df_test_temp)
                         train_df = train_df.union(df_train_temp)
   
-                print('Here2')
                 # Creating the Baseline Model
                 lr_all = LogisticRegression(featuresCol = 'features', 
-                            labelCol='arrival_delay_category_indexed')
+                            labelCol='arrival_delay_category_indexed',
+                            maxIter=1)
                 lr_Model_all = lr_all.fit(train_df)
 
                 predictions_train = lr_Model_all.transform(train_df)
@@ -151,24 +158,23 @@ class PySpark_Code:
                                                         'prediction', 
                                                         'probability')
 
-                # # Will test out later individually.
-                # # Saving the predictions made on the training data
-                # predictions_train.withColumn('features', self.sparse_format_udf(col('features')))\
-                #         .withColumn('rawPrediction', self.sparse_format_udf(col('rawPrediction')))\
-                #                 .withColumn('probability', self.sparse_format_udf(col('probability')))\
-                #                         .coalesce(1).write.csv(path='gs://plane-pyspark-run/Spark_Data_Output/predictions_train_table.csv',
-                #                                                mode='overwrite',
-                #                                                header=True)
-                # # Saving the preditions made on the testing data
-                # predictions_test.withColumn('features', self.sparse_format_udf(col('features')))\
-                #         .withColumn('rawPrediction', self.sparse_format_udf(col('rawPrediction')))\
-                #                 .withColumn('probability', self.sparse_format_udf(col('probability')))\
-                #                         .coalesce(1).write.csv(path='gs://plane-pyspark-run/Spark_Data_Output/predictions_test_table.csv',
-                #                                                 mode='overwrite',
-                #                                                 header=True)
 
-                print('Here3')
-                # lr_Model_all.save("gs://plane-pyspark-run/Spark_Models/lr_model_all")
+                if self.save_model_preds == True:
+                        predictions_train.withColumn('features', self.sparse_format_udf(col('features')))\
+                                .withColumn('rawPrediction', self.sparse_format_udf(col('rawPrediction')))\
+                                        .withColumn('probability', self.sparse_format_udf(col('probability')))\
+                                                .coalesce(1).write.csv(path='gs://plane-pyspark-run/Spark_Data_Output/predictions_train_table.csv',
+                                                                mode='overwrite',
+                                                                header=True)
+                        # Saving the preditions made on the testing data
+                        predictions_test.withColumn('features', self.sparse_format_udf(col('features')))\
+                                .withColumn('rawPrediction', self.sparse_format_udf(col('rawPrediction')))\
+                                        .withColumn('probability', self.sparse_format_udf(col('probability')))\
+                                                .coalesce(1).write.csv(path='gs://plane-pyspark-run/Spark_Data_Output/predictions_test_table.csv',
+                                                                        mode='overwrite',
+                                                                        header=True)
+                if self.save_model == True:
+                        lr_Model_all.write().overwrite().save("gs://plane-pyspark-run/Spark_Models/lr_model_all")
 
 
                 train_accuracy = predictions_train.filter(predictions_train.arrival_delay_category_indexed == predictions_train.prediction).count() / float(predictions_train.count())
@@ -177,11 +183,40 @@ class PySpark_Code:
                 test_accuracy = predictions_test.filter(predictions_test.arrival_delay_category_indexed == predictions_test.prediction).count() / float(predictions_test.count())
                 print("Test Accuracy : {}".format(test_accuracy))
 
+                # Prints conufsion Matrix Values
+                preds_and_labels = predictions_test.select(['prediction','arrival_delay_category_indexed'])\
+                        .withColumn('label', f.col('arrival_delay_category_indexed').cast(FloatType())).orderBy('prediction')
+
+                preds_and_labels = preds_and_labels.select(['prediction','label'])
+
+                metrics = MulticlassMetrics(preds_and_labels.rdd.map(tuple))
+
+                print(metrics.confusionMatrix().toArray())
+
+                # Model metrics
+                trainingSummary = lr_Model_all.summary
+                accuracy = trainingSummary.accuracy
+                falsePositiveRate = trainingSummary.weightedFalsePositiveRate
+                truePositiveRate = trainingSummary.weightedTruePositiveRate
+                fMeasure = trainingSummary.weightedFMeasure()
+                precision = trainingSummary.weightedPrecision
+                recall = trainingSummary.weightedRecall
+                print("Accuracy: %s\nFPR: %s\nTPR: %s\nF-measure: %s\nPrecision: %s\nRecall: %s"
+                % (accuracy, falsePositiveRate, truePositiveRate, fMeasure, precision, recall))
 
 
+                ## Hyperparameters took to long to run, however it can be done, not fasible, unless you have more power.
+                # # Create ParamGrid for Cross Validation
+                # paramGrid = (ParamGridBuilder()
+                #         .addGrid(lr_all.regParam, [0.01, 0.5])# regularization parameter
+                #         .addGrid(lr_all.elasticNetParam, [0.0, 0.5])# Elastic Net Parameter (Ridge = 0)
+                #         .addGrid(lr_all.maxIter, [1, 5])#Number of iterations
+                #         .build())
 
-                # lr = LogisticRegression(featuresCol='features', labelCol='arrival_delay_category_indexed', maxIter=1)
-                # lrModel = lr.fit(final_df)
-                # predictions = lrModel.transform(final_df)
+                # cv = CrossValidator(estimator=lr_all, estimatorParamMaps=paramGrid, 
+                #                 evaluator=evaluator, numFolds=10)
 
-                # print(predictions.show(3))
+                # cvModel = cv.fit(train_df)
+
+                # predictions = cvModel.transform(test_df)
+                # best_model=cvModel.bestModel
