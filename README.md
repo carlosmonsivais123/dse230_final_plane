@@ -68,4 +68,7 @@
 - **Confusion_Matrixes**: Contains output for accuracy used in the final presentation.
 - **EDA_Plots**: Contains code to create graphs used in initial presentation and push graphs to bucket mentioned above.
 
+### GCP Project Infrastructure Diagram
+- Below is a diagram we created to show how we are running our project. We spin up a cluster for the eda, feature engineering, and modelling run the PySpark
+code and output everything we want to save in the speicified GCP buckets, then we close and delete the clusters programatically.
 ![travis_scott](/GCP_Run/gcp_run_diagram.png)
