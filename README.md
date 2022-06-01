@@ -23,74 +23,41 @@
         - This will upload the neccesary python files with the pyspark commands to dataproc located here: gs://plane-pyspark-run/DataProc_Files/
         - This will also upload the CSV’s of the raw data that were downloaded in the jupyter notebook mentioned above to a GCP bucket located here: gs://   plane-pyspark-run/flight-delays/
 
+    2. EDA
+        - This will create a pySpark cluster,  run the EDA dataproc code that calculates a summary table for each column and creates multiple graphs used for initial exploratory analysis
+        - These outputs are saved to a GCP bucket located here: gs://plane-pyspark-run/EDA_Static_Images/
+        -  Cluster is deleted
+    
+    3. Feature Engineering
+        - Creates a new cluster
+        - This step cleans the data by eliminating unnecessary columns, dropping nulls where needed, and changing column values from codes to something more readable
+        - The categories for the labels were  created
+        - The counts for departing/landing flights during the same hour of take off/depature were computed
+        - Final dataset ultimately includes: 
+            - Day of week
+            - Month
+            - Airline
+            - Origin Airport
+            - Destination Airport
+            - Hour of departure
+            - Hour of arrival
+            - Distance of flight
+            - Number of flights leaving/arriving origin airport
+            - Number of flights leaving/arriving destination airport
+        - Uploads final dataset to a GCP bucket located here: gs://plane-pyspark-run/Spark_Data_Output/
+        - The cluster is deleted
 
+    4. Logistic Regression
+        - Creates a new cluster
+        - One-Hot encodes labels and categorical features
+        - Creates a vector of the desired features
+        - Standarizes the features
+        - Stratifies the sample to a test and train dataset
+        - Runs the train data through a logistic regression model
+        - Optional: test hyper parameters but this is commented out to save on compute time
+        - Calculates accuracy using the test set and prints results in the log file
+        - Uploads prediction and model to GCP bucket located here: s://plane-pyspark-run/Spark_Models/lr_model_all
+        - Cluster is deleted
 
-
-
-
-
-
-### Project Structure
-#### Run on GCP PySpark Cluster
-* The files to run on GCP are located in this repository in the GCP_Run folder.
-* We will be able to run the project using our PySpark clusters we will spin up on GCP where we will run it end to end from the data cleaning, to the modeling and then to analyzing the otuput results and conclusions.
-
-# Running Project in GCP
-* To run this project make sure to go into the Input_Variables folder and change the YAML files gcp_cedentials variable to match the location of where your key is located.
-* Afterwards, run the main.ipynb file in the directory, you will get messages as each step is completed.
-* main.py
-    * This file will initiate the execution of the whole program including:
-        - Sending the required files into the speciifed GCP Buckets
-        - Create the PySpark cluster
-        - Run the Pyspark code stored in the GCP bucket
-        - Delete the PySpark cluster
-
-<br>
-
-# Folder and File Structure
-## Folder: Input_Variables
-* These files take in the user specified variables needed for the project such as:
-    * gcp_project_id: 'dse230' --> No change
-    * gcp_region: 'us-central1' --> No change
-    * gcp_cluster_name: 'dse-230-pyspark' --> No change
-    * gcp_bucket_name: 'plane-pyspark-run' --> No change 
-
-    ### Files: Input_Variables  
-    * gcp_credentials: '/Users/CarlosMonsivais/Desktop/dse230_plane/dse230-0c3411f763a5.json' --> Change to wherever your JSON key is located.
-        * input_vars.yaml: This is the YAML file where you deifne the varibles above, only need to chnage the location of the JSON key.
-        * read_vars.py: Reads in the variable from the YAML file above so we can use those variables throughout the project.
-
-<br>
-
-## Folder: GCP_Functions
-* These files will create a Client variable to access the GCP bucket API and will also upload local files up to a specified GCP bucket.
-
-    ### Files: GCP_Functions
-    * GCP_File_Upload.py: This file has two functions within the same class, one to create a Client variables type and another to send the speciifed files into
-    a GCP bucket.
-
-<br>
-
-## Folder: PySpark_Files
-* These files will create a spark cluster, run a PySpark job using the python files we uploaded to GCP initially and then delete the cluster after the job is complete.
-
-    ### Files: PySpark_Files
-    * create_run_delete_spark_cluseter: This file has three functions within the same class, one to create a PySpark cluster, one to run the these files stored in the GCP bucket (dataproc_main.py, dataproc_spark_session.py, dataproc_spark_commands.py).
-
-<br>
-
-## Folder: DataProc_Files
-* These are the files that will be run in DataProc in GCP.
-
-    ### Files: DataProc_Files
-    * dataproc_main.py: Runs the dataproc_spark_session.py and the dataproc_spark_commands.py Python files.
-    * dataproc_spark_session.py: Creates a spark session and reads in teh data from a GCS bucket.
-    * dataproc_spark_commands.py: These are the PySpark commands that we will use to make calculations on our dataframe.
-
-<br>
-
-## Folder: EDA_Plots
-* This file will plot the calculations made in PySpark using plotly.
-
-    ### Files: EDA_Plots
-    * eda_plots.py: Reads in the csv files generated by the PySpark calculations, creates plots using Plotly and then saves them as PNG files in a GCS bucket.
+### Code Organization
+    - GCP_Functions: functions that creates a GCP client and upload files to GCP buckets used throughout the project
