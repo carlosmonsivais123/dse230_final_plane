@@ -2,31 +2,32 @@
 ## By: Jessica Allen and Carlos Monsivais
 
 ### Project Description
-* Goal: Want to predict whether an airplane flight will be arriving in one of the following categories.
-    * Super Early: <= -15 mins
-    * Slightly Early: -5 mins
-    * On Time: -5 to 5 mins
-    * Slightly Delayed: 5 to 15 mins
-    * Super Delayed: >= 15 mins
+* Project Goal: Can we predict when a flight will be delayed based on the origin airport, destination airport, time of day, airline, distance of flight, and date?
 
 * Data: We will use flight data from the United States from the year 2015 from the following source:
     * https://www.kaggle.com/datasets/usdot/flight-delays?select=flights.csv
 
-* Project Thoughts: Iterate this process to model by aiport, and compare individual models by airtport to a full model that models all airports?
+### Included in Project
+- Kaggle Key
+- GCP Key
+- Code for EDA, Feature Engineering and ML Model 
+- Code to run the above files on a cluster in GCP
 
-### To Do List
-| Item                             | Description                                                                                                                  | Completed   |
-| :---:                            |    :----:                                                                                                                    |    :---:    |
-| Get Data                         | We were able to get the plane data from https://www.kaggle.com/datasets/usdot/flight-delays?select=flights.csv               | Done        |
-| Store Data in GCP                | Stored data in BQ and in a GCP bucket                                                                                        | Done        |
-| Change Data Scehma               | Change the schema of the data                                                                                                | In Progress |
-| Visualizations                   | Create EDA visualizations for plane data --> Run these through PySpark                                                       | Done        |
-| Google Slides Presentation 1     | Complete Presenation 1                                                                                                       | Done        |
-| Create prediction Category	   | Create super early, slightly early, on time, slightly delayed, and super delayed category in the data	                      | In Progress |
-| Feature Engineering        	   | Create more features in data set that may be helpful for model                                                               | In Progress |
-| Stratified Train Test Split Data | Train Test Split proportionally in PySpark.                                                                                  | In Progress |
-| Model Data                       | Create Logisitic Regression Model                                                                                            | In Progress |
-| Conclusion                       | Summarize Project and Models                                                                                                 | In Progress |
+### To Run the Project in GCP
+* Open the jupyter notebook named run_it.ipynb and follow the detailed instructions. This notebook will have the user set up a virtual enviroment and input the pwd for the GCP key.  It will also download the datasets from kaggle in the necessary location on the user’s local machine. Lastly, it will run the main.py file which will run all of the necessary code.
+
+
+### Overview of Project
+* Ultimately, the notebook is going to run the main.py file located in GCP_Run directory. This main file will run through four main steps. 
+    1. Upoad Files
+        - This will upload the neccesary python files with the pyspark commands to dataproc located here: gs://plane-pyspark-run/DataProc_Files/
+        - This will also upload the CSV’s of the raw data that were downloaded in the jupyter notebook mentioned above to a GCP bucket located here: gs://   plane-pyspark-run/flight-delays/
+
+
+
+
+
+
 
 
 ### Project Structure
