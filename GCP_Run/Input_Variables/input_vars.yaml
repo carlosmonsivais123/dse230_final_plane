@@ -1,17 +1,5 @@
-# This is the yaml file where the inputs for the GCP Run will be defined. These input variables will be read in and converted into Python variables
-# in the read_vars.py file in this folder.
-
-# GCP Project ID
-gcp_project_id: 'dse230'
-
-# GCP region
-gcp_region: 'us-central1'
-
-# Name of we are giving the Pyspark Cluster in GCP DataProc
-gcp_cluster_name: 'dse-230-pyspark'
-
-# Bucket name where all outputs will be stored
-gcp_bucket_name: 'plane-pyspark-run'
-
-# GCP credentials key name
-gcp_credentials: '/Users/CarlosMonsivais/Desktop/dse230_plane/dse230-0c3411f763a5.json'
+gcp_bucket_name: plane-pyspark-run
+gcp_cluster_name: dse-230-pyspark
+gcp_credentials: /Users/CarlosMonsivais/Desktop/dse230_plane/dse230-0c3411f763a5.json
+gcp_project_id: dse230
+gcp_region: us-central1
