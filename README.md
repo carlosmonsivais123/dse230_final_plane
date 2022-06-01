@@ -60,4 +60,4 @@
         - Cluster is deleted
 
 ### Code Organization
-    - GCP_Functions: functions that creates a GCP client and upload files to GCP buckets used throughout the project
+- **GCP_Functions**: functions that creates a GCP client and upload files to GCP buckets used throughout the project
