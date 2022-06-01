@@ -2,9 +2,9 @@
 ## By: Jessica Allen and Carlos Monsivais
 
 ### Project Description
-* Project Goal: Can we predict when a flight will be delayed based on the origin airport, destination airport, time of day, airline, distance of flight, and date?
+* **Project Goal**: Can we predict when a flight will be delayed based on the origin airport, destination airport, time of day, airline, distance of flight, and date?
 
-* Data: We will use flight data from the United States from the year 2015 from the following source:
+* **Data**: We will use flight data from the United States from the year 2015 from the following source:
     * https://www.kaggle.com/datasets/usdot/flight-delays?select=flights.csv
 
 ### Included in Project
@@ -19,16 +19,16 @@
 
 ### Overview of Project
 * Ultimately, the notebook is going to run the main.py file located in GCP_Run directory. This main file will run through four main steps. 
-    1. Upoad Files
+    1. **Upoad Files**
         - This will upload the neccesary python files with the pyspark commands to dataproc located here: gs://plane-pyspark-run/DataProc_Files/
         - This will also upload the CSV’s of the raw data that were downloaded in the jupyter notebook mentioned above to a GCP bucket located here: gs://   plane-pyspark-run/flight-delays/
 
-    2. EDA
+    2. **EDA**
         - This will create a pySpark cluster,  run the EDA dataproc code that calculates a summary table for each column and creates multiple graphs used for initial exploratory analysis
         - These outputs are saved to a GCP bucket located here: gs://plane-pyspark-run/EDA_Static_Images/
         -  Cluster is deleted
     
-    3. Feature Engineering
+    3. **Feature Engineering**
         - Creates a new cluster
         - This step cleans the data by eliminating unnecessary columns, dropping nulls where needed, and changing column values from codes to something more readable
         - The categories for the labels were  created
@@ -47,7 +47,7 @@
         - Uploads final dataset to a GCP bucket located here: gs://plane-pyspark-run/Spark_Data_Output/
         - The cluster is deleted
 
-    4. Logistic Regression
+    4. **Logistic Regression**
         - Creates a new cluster
         - One-Hot encodes labels and categorical features
         - Creates a vector of the desired features
