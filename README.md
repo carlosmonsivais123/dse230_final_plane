@@ -67,3 +67,5 @@
 - **Input_Variables**: Contains all key locations and configs needed.
 - **Confusion_Matrixes**: Contains output for accuracy used in the final presentation.
 - **EDA_Plots**: Contains code to create graphs used in initial presentation and push graphs to bucket mentioned above.
+
+![travis_scott](/GCP_Run/gcp_run_diagram.png)
